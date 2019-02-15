@@ -27,5 +27,3 @@ $(appname):$(obj)
 
 clean:
 	@rm -rf $(ROOT_DIR)/$(appname) $(OBJ_DIR)/*.o 
-
-
