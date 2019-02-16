@@ -43,21 +43,22 @@ int main(int argc, char **argv)
 	imshow("t4", edge);*/
   
 	//从摄像头读入视频
-	//sudo modprobe bcm2835-v4l2 
+	//sudo modprobe bcm2835-v4l2
+	//echo "bcm2835-v4l2" >> /etc/modules
 	VideoCapture capture(0);
 	if(!capture.isOpened())
 	{
-			cout<<"camera open failure"<<endl;
-			return -1;
+		cout<<"camera open failure"<<endl;
+		return -1;
 	}
 	//循环显示每一帧
-	while(1)  
-	{  
-		Mat frame;  //定义一个Mat变量，用于存储每一帧的图像
-		capture>>frame;  //读取当前帧
-		imshow("读取视频",frame);  //显示当前帧
-		waitKey(30);  //延时30ms
-	}  
+	while(1)
+	{
+		Mat frame;//定义一个Mat变量，用于存储每一帧的图像
+		capture>>frame;//读取当前帧
+		imshow("读取视频",frame);//显示当前帧
+		waitKey(30);//延时30ms
+	}
 
 	waitKey(0);
 }
