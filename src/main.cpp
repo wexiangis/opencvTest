@@ -1,29 +1,68 @@
 
-//--------------------------------------【程序说明】-------------------------------------------
-//		程序说明：《OpenCV3编程入门》OpenCV3版书本配套示例程序69
-//		程序描述：基础轮廓查找——findContours+drawContours
-//		开发测试所用操作系统： Windows 7 64bit
-//		开发测试所用IDE版本：Visual Studio 2010
-//		开发测试所用OpenCV版本：	3.0 beta
-//		2014年11月 Created by @浅墨_毛星云
-//		2014年12月 Revised by @浅墨_毛星云
-//------------------------------------------------------------------------------------------------
 
-
-
-//---------------------------------【头文件、命名空间包含部分】----------------------------
-//		描述：包含程序所使用的头文件和命名空间
-//------------------------------------------------------------------------------------------------
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 using namespace cv;
 using namespace std;
 
-//-----------------------------------【main( )函数】--------------------------------------------
+#define MY_TEST 1
 
-//		描述：控制台应用程序的入口函数，我们的程序从这里开始
-//-------------------------------------------------------------------------------------------------
+#if(MY_TEST == 1)
+
+void creatAlphaMat(Mat &mat)
+{
+	for(int i = 0; i < mat.rows; i++)
+	{
+		for(int j = 0; j < mat.cols; j++)
+		{
+			Vec4b& rgba = mat.at<Vec4b>(i, j);
+			rgba[0] = 255;
+			rgba[1] = saturate_cast<uchar>( (float (mat.cols - j)) / (float (mat.cols)) *255 );
+			rgba[2] = saturate_cast<uchar>( (float (mat.rows - i)) / (float (mat.rows)) *255 );
+			rgba[3] = saturate_cast<uchar>( 05 * (rgba[1] + rgba[2]) );
+		}
+	}
+}
+
+int main( int argc, char** argv )
+{
+	Mat mat(240, 240, CV_8UC4);
+	creatAlphaMat(mat);
+
+	Mat srcImg = imread("./res/t1.jpg");
+	Mat src2Img = imread("./res/t2.jpg");
+
+	Mat pice1 = srcImg(Range(50, 50+100), Range(50, 50+100));//从t1中截取一块
+	Mat pice2 = src2Img(Range(50, 50+100), Range(50, 50+100));//~
+
+	vector<int>compression_params;
+	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+	compression_params.push_back(9);
+
+	try{
+		imwrite("./res/imwrite_alpha.png", mat, compression_params);
+		imshow("test", mat);
+
+		addWeighted(pice1, 0.5, pice2, 0.5, 0.0, pice2);//把pice1叠到pice2上,并输出到pice2所在的t2原图上
+		imshow("test2", srcImg);
+
+		imshow("t1", srcImg);
+		imshow("t2", src2Img);
+
+		waitKey(0);
+	}
+	catch(runtime_error &ex)
+	{
+		fprintf(stderr, "异常错误");
+		return 1;
+	}
+
+	return 0;
+}
+
+#elif(MY_TEST == 0)
+
 int main( int argc, char** argv )
 {
 	// 【1】载入原始图，且必须以二值图模式载入
@@ -61,6 +100,10 @@ int main( int argc, char** argv )
 	//【7】显示最后的轮廓图
 	imshow( "轮廓图", dstImage );
 
+	imwrite("./res/imwrite_test.jpg", dstImage);
+
 	waitKey(0);
 
 }
+
+#endif

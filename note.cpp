@@ -56,4 +56,7 @@ bool imwrite(const string& fileName, InputArray img, const vector<int>& param=ve
 //vector(int nSize, const t& t); 创建一个元素个数为nSize的向量,且元素都为t
 //vector(const vector&); 复制构造函数
 //...
+//jpeg: 0~100 默认95 CV_IMWRITE_JPEG_CHROMA_QUALITY 图片质量
+//png: 0~9 默认3 CV_IMWRITE_PNG_COMPRESSION 压缩时间
+//ppm,pgm,pbm: 0/1 CV_IMWRITE_PXM_BINARY 
 
