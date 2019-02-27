@@ -1,132 +1,66 @@
+
 //--------------------------------------【程序说明】-------------------------------------------
-//		程序说明：《OpenCV3编程入门》OpenCV3版书本配套示例程序11
-//		程序描述：来自OpenCV安装目录下Samples文件夹中的官方示例程序-人脸识别
-//		测试所用操作系统： Windows 7 64bit
-//		测试所用IDE版本：Visual Studio 2010
-//		测试所用OpenCV版本：	3.0 beta
-//		2014年11月 Revised by @浅墨_毛星云
+//		程序说明：《OpenCV3编程入门》OpenCV3版书本配套示例程序69
+//		程序描述：基础轮廓查找——findContours+drawContours
+//		开发测试所用操作系统： Windows 7 64bit
+//		开发测试所用IDE版本：Visual Studio 2010
+//		开发测试所用OpenCV版本：	3.0 beta
+//		2014年11月 Created by @浅墨_毛星云
+//		2014年12月 Revised by @浅墨_毛星云
 //------------------------------------------------------------------------------------------------
 
 
-/**
- * @file ObjectDetection.cpp
- * @author A. Huaman ( based in the classic facedetect.cpp in samples/c )
- * @brief A simplified version of facedetect.cpp, show how to load a cascade classifier and how to find objects (Face + eyes) in a video stream
- */
 
 //---------------------------------【头文件、命名空间包含部分】----------------------------
 //		描述：包含程序所使用的头文件和命名空间
-//-------------------------------------------------------------------------------------------------
-#include "opencv2/objdetect/objdetect.hpp"
+//------------------------------------------------------------------------------------------------
+#include <opencv2/opencv.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-
-#include <iostream>
-#include <stdio.h>
-
-using namespace std;
 using namespace cv;
-
-void detectAndDisplay( Mat frame );
-
-//--------------------------------【全局变量声明】----------------------------------------------
-//		描述：声明全局变量
-//-------------------------------------------------------------------------------------------------
-//注意，需要把"haarcascade_frontalface_alt.xml"和"haarcascade_eye_tree_eyeglasses.xml"这两个文件复制到工程路径下
-String face_cascade_name = "res/haarcascade_frontalface_alt.xml";
-String eyes_cascade_name = "res/haarcascade_eye_tree_eyeglasses.xml";
-CascadeClassifier face_cascade;
-CascadeClassifier eyes_cascade;
-string window_name = "Capture - Face detection";
-RNG rng(12345);
-
-
-//--------------------------------【help( )函数】----------------------------------------------
-//		描述：输出帮助信息
-//-------------------------------------------------------------------------------------------------
-static void ShowHelpText()
-{
-	//输出欢迎信息和OpenCV版本
-	cout <<"\n\n\t\t\t非常感谢购买《OpenCV3编程入门》一书！\n"
-		<<"\n\n\t\t\t此为本书OpenCV3版的第11个配套示例程序\n"
-		<<	"\n\n\t\t\t   当前使用的OpenCV版本为：" << CV_VERSION 
-		<<"\n\n  ----------------------------------------------------------------------------" ;
-}
-
+using namespace std;
 
 //-----------------------------------【main( )函数】--------------------------------------------
+
 //		描述：控制台应用程序的入口函数，我们的程序从这里开始
 //-------------------------------------------------------------------------------------------------
-int main( void )
+int main( int argc, char** argv )
 {
-  VideoCapture capture;
-  Mat frame;
+	// 【1】载入原始图，且必须以二值图模式载入
+	Mat srcImage=imread("res/t2.jpg", 0);
+	imshow("原始图",srcImage);
 
+	//【2】初始化结果图
+	Mat dstImage = Mat::zeros(srcImage.rows, srcImage.cols, CV_8UC3);
 
-  //-- 1. 加载级联（cascades）
-  if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
-  if( !eyes_cascade.load( eyes_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
+	//【3】srcImage取大于阈值119的那部分
+	srcImage = srcImage > 119;
+	imshow( "取阈值后的原始图", srcImage );
 
-  //-- 2. 读取视频
-  capture.open(0);
-  ShowHelpText();
-  if( capture.isOpened() )
-  {
-    for(;;)
-    {
-      capture >> frame;
+	//【4】定义轮廓和层次结构
+	vector<vector<Point> > contours;
+	vector<Vec4i> hierarchy;
 
-      //-- 3. 对当前帧使用分类器（Apply the classifier to the frame）
-      if( !frame.empty() )
-       { detectAndDisplay( frame ); }
-      else
-       { printf(" --(!) No captured frame -- Break!"); break; }
+	//【5】查找轮廓
+	//此句代码的OpenCV2版为：
+	//findContours( srcImage, contours, hierarchy,CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );
+	//此句代码的OpenCV3版为：
+	findContours( srcImage, contours, hierarchy,RETR_CCOMP, CHAIN_APPROX_SIMPLE );
 
-      int c = waitKey(10);
-      if( (char)c == 'c' ) { break; }
+	// 【6】遍历所有顶层的轮廓， 以随机颜色绘制出每个连接组件颜色
+	int index = 0;
+	for( ; index >= 0; index = hierarchy[index][0] )
+	{
+		Scalar color( rand()&255, rand()&255, rand()&255 );
+		//此句代码的OpenCV2版为：
+		//drawContours( dstImage, contours, index, color, CV_FILLED, 8, hierarchy );
+		//此句代码的OpenCV3版为：
+		drawContours( dstImage, contours, index, color, FILLED, 8, hierarchy );
+	}
 
-    }
-  }
-  return 0;
-}
+	//【7】显示最后的轮廓图
+	imshow( "轮廓图", dstImage );
 
+	waitKey(0);
 
-void detectAndDisplay( Mat frame )
-{
-   std::vector<Rect> faces;
-   Mat frame_gray;
-
-   cvtColor( frame, frame_gray, COLOR_BGR2GRAY );
-   equalizeHist( frame_gray, frame_gray );
-
-   //-- 人脸检测
-   //此句代码的OpenCV2版为：
-  //face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30) );
-   //此句代码的OpenCV3版为：
-   face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
-
-
-   for( size_t i = 0; i < faces.size(); i++ )
-    {
-      Point center( faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2 );
-      ellipse( frame, center, Size( faces[i].width/2, faces[i].height/2), 0, 0, 360, Scalar( 255, 0, 255 ), 2, 8, 0 );
-
-      Mat faceROI = frame_gray( faces[i] );
-      std::vector<Rect> eyes;
-
-      //-- 在脸中检测眼睛
-	  //此句代码的OpenCV2版为：
-     // eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 |CV_HAAR_SCALE_IMAGE, Size(30, 30) );
-	  //此句代码的OpenCV3版为：
-	  eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
-
-      for( size_t j = 0; j < eyes.size(); j++ )
-       {
-         Point eye_center( faces[i].x + eyes[j].x + eyes[j].width/2, faces[i].y + eyes[j].y + eyes[j].height/2 );
-         int radius = cvRound( (eyes[j].width + eyes[j].height)*0.25 );
-         circle( frame, eye_center, radius, Scalar( 255, 0, 0 ), 3, 8, 0 );
-       }
-    }
-   //-- 显示最终效果图
-   imshow( window_name, frame );
 }
