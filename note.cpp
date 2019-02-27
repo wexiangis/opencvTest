@@ -51,4 +51,9 @@ bool imwrite(const string& fileName, InputArray img, const vector<int>& param=ve
 
 //fileName 输出文件名,需自带后缀.jpg
 //img 使用Mat类型
-//
+//vector(); 创建一个空向量
+//vector(int nSize); 创建一个元素个数为nSize的向量
+//vector(int nSize, const t& t); 创建一个元素个数为nSize的向量,且元素都为t
+//vector(const vector&); 复制构造函数
+//...
+
