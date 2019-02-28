@@ -8,7 +8,7 @@ using namespace std;
 
 #define MY_TEST 3
 
-#if(MY_TEST == 3)
+#if(MY_TEST == 3) // setMouseCallback() MouseCallback()
 
 void my_mouseCallback(int event, int x, int y, int flags, Mat* srcImg)
 {
@@ -31,6 +31,12 @@ int main(int argc, char **argv)
 	imshow("t1", srcImg);
 
 	setMouseCallback("t1", (MouseCallback)(&my_mouseCallback), &srcImg);
+
+	int ms[3] = {3, 2, 1};
+	Mat mat(3, ms, CV_8UC1, Scalar::all(1));//长2 宽2 高1
+	// Mat mat(3, ms, CV_8UC3, Scalar(1,2,3));
+
+	// cout<<"m ="<<endl<<mat<<endl; //仅在2维时可用
 
 	waitKey(0);
 

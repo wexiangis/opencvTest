@@ -98,12 +98,19 @@ Mat A008(240, 320, CV_8UC3, Scalar(255, 0, 0));   //Mat(int rows, int cols, int 
 // 1
 Mat B008(A008, Rect(0, 0, A008.rows, A008.cols));  // Rect(x, y, width, height)
 // 2
-Mat C008 = A008(Rect(0, 0, A008.rows, A008.cols));
+Mat C008 = A008(Rect(0, 0, A008.rows, A008.cols)); //范围界定
 // 3
-Mat D008 = A008(Range(0, A008.rows), Range(0, A008.cols));
+Mat D008 = A008(Range(0, A008.rows), Range(0, A008.cols)); //范围界定
 // 4
-Mat E008 = A008.clone();
+Mat E008 = A008.clone(); //完全复制 !!
 // 5
+Mat F008(A008); //拷贝构造函数
+// 6
+Mat G008 = A008;
+// 7
+Mat H008;
+A008.copyTo(H008); //完全复制 !!
+
 
 //===== 009 convertTo =====
 
@@ -141,3 +148,17 @@ enum MouseEventFlags {
        EVENT_FLAG_SHIFTKEY  = 16,//!< indicates that SHIFT Key is pressed.
        EVENT_FLAG_ALTKEY    = 32 //!< indicates that ALT Key is pressed.
      };
+
+//===== 011 矩阵创建 =====
+
+//-- 1 --
+Mat mat011(2, 2, CV_8UC3, Scalar(0, 0, 255));
+//CV_8UC3 : CV_[位数][有/无符:S/U][类型前缀]C[通道数]
+
+//-- 2 --
+int ms011[3] = {3, 2, 1};
+Mat mat011_2(3, ms011, CV_8UC1, Scalar::all(255));//3x2x1矩阵
+
+//-- 3 --
+Mat mat011_3;
+mat011_3.create(3, 2, 1, CV_8UC(1));//3x2x1矩阵 CV_8UC(1)同CV_8UC1
