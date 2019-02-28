@@ -10,7 +10,7 @@ using namespace std;
 
 #if(MY_TEST == 1)
 
-void creatAlphaMat(Mat &mat)
+void creatAlphaMat(Mat& mat)
 {
 	for(int i = 0; i < mat.rows; i++)
 	{
@@ -45,7 +45,6 @@ int main( int argc, char** argv )
 		imshow("test", mat);
 
 		addWeighted(pice1, 0.5, pice2, 0.5, 0.0, pice2);//把pice1叠到pice2上,并输出到pice2所在的t2原图上
-		imshow("test2", srcImg);
 
 		imshow("t1", srcImg);
 		imshow("t2", src2Img);
