@@ -90,6 +90,8 @@ int createTrackbar(const string& trackbarName, const string& winName, int* value
 //onChange 滑块变动时回调 函数原型 void XXX(int, void*) 前者为滑块位置,后者为用户数据(即传入的 usrdata)
 //usrdata 用户数据
 
+int getTrackbarPos(const string& trackbarName, const string& winName); //读取滑动条位置
+
 //===== 008 裁剪和拷贝图片 ====
 
 Mat A008(240, 320, CV_8UC3, Scalar(255, 0, 0));   //Mat(int rows, int cols, int type, Scalar(初始值));
@@ -109,4 +111,33 @@ Mat E008 = A008.clone();
 // Mat srcImg009 = imread("./res/t2.jpg");
 // srcImg009.convertTo(srcImg009, CV_8UC3, 0.5, 0);
 
-//===== 010  =====
+//===== 010 鼠标 =====
+
+void setMouseCallback(const string& winName, MouseCallback onMouse, void* useData = 0);
+
+// void onMouse(int event, int x, int y, int flags, void* userdata);
+// x,y base on map
+// event = MouseEventTypes :
+enum MouseEventTypes {
+       EVENT_MOUSEMOVE      = 0, //!< indicates that the mouse pointer has moved over the window.
+       EVENT_LBUTTONDOWN    = 1, //!< indicates that the left mouse button is pressed.
+       EVENT_RBUTTONDOWN    = 2, //!< indicates that the right mouse button is pressed.
+       EVENT_MBUTTONDOWN    = 3, //!< indicates that the middle mouse button is pressed.
+       EVENT_LBUTTONUP      = 4, //!< indicates that left mouse button is released.
+       EVENT_RBUTTONUP      = 5, //!< indicates that right mouse button is released.
+       EVENT_MBUTTONUP      = 6, //!< indicates that middle mouse button is released.
+       EVENT_LBUTTONDBLCLK  = 7, //!< indicates that left mouse button is double clicked.
+       EVENT_RBUTTONDBLCLK  = 8, //!< indicates that right mouse button is double clicked.
+       EVENT_MBUTTONDBLCLK  = 9, //!< indicates that middle mouse button is double clicked.
+       EVENT_MOUSEWHEEL     = 10,//!< positive and negative values mean forward and backward scrolling, respectively.
+       EVENT_MOUSEHWHEEL    = 11 //!< positive and negative values mean right and left scrolling, respectively.
+     };
+// flags = MouseEventFlags :
+enum MouseEventFlags {
+       EVENT_FLAG_LBUTTON   = 1, //!< indicates that the left mouse button is down.
+       EVENT_FLAG_RBUTTON   = 2, //!< indicates that the right mouse button is down.
+       EVENT_FLAG_MBUTTON   = 4, //!< indicates that the middle mouse button is down.
+       EVENT_FLAG_CTRLKEY   = 8, //!< indicates that CTRL Key is pressed.
+       EVENT_FLAG_SHIFTKEY  = 16,//!< indicates that SHIFT Key is pressed.
+       EVENT_FLAG_ALTKEY    = 32 //!< indicates that ALT Key is pressed.
+     };

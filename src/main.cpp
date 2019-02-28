@@ -6,9 +6,38 @@
 using namespace cv;
 using namespace std;
 
-#define MY_TEST 2
+#define MY_TEST 3
 
-#if(MY_TEST == 2) // namedWindow() createTrackbar() Range()
+#if(MY_TEST == 3)
+
+void my_mouseCallback(int event, int x, int y, int flags, Mat* srcImg)
+{
+	printf("event = %d, flags = %d [%d, %d]\n", event, flags, x, y);
+
+	if(event == 0)
+	{
+		srcImg->at<Vec3b>(y, x)[0] = 0;//B
+		srcImg->at<Vec3b>(y, x)[1] = 0;//G
+		// srcImg->at<Vec3b>(x, y)[2] = 0;//R
+	}
+
+	imshow("t1", *srcImg);
+}
+
+int main(int argc, char **argv)
+{
+	Mat srcImg = imread("./res/t1.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+	imshow("t1", srcImg);
+
+	setMouseCallback("t1", (MouseCallback)(&my_mouseCallback), &srcImg);
+
+	waitKey(0);
+
+	return 0;
+}
+
+#elif(MY_TEST == 2) // namedWindow() createTrackbar() Range()
 
 #define WIN_NAME 	  "test"
 #define TRACKBAR_NAME "tBar"
