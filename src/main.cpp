@@ -6,9 +6,43 @@
 using namespace cv;
 using namespace std;
 
-#define MY_TEST 1
+#define MY_TEST 2
 
-#if(MY_TEST == 1)
+#if(MY_TEST == 2) // namedWindow() createTrackbar() Range()
+
+#define WIN_NAME 	  "test"
+#define TRACKBAR_NAME "tBar"
+
+static Mat srcImg, distImg;
+
+void my_trackbar_callback(int count, void *argv)
+{
+	if(count > 0)
+		// distImg = srcImg(Range(0, srcImg.rows/count), Range(0, srcImg.cols));
+		distImg = srcImg(Rect(0, 0, srcImg.cols, srcImg.rows/count));
+
+	imshow(WIN_NAME, distImg);
+}
+
+int main(int argc, char **argv)
+{
+	srcImg = imread("./res/t2.jpg");
+
+	distImg = srcImg(Range(0, srcImg.rows), Range(0, srcImg.cols));
+
+	namedWindow(WIN_NAME);
+
+	int value = 0;
+	createTrackbar(TRACKBAR_NAME, WIN_NAME, &value, 10, my_trackbar_callback);
+
+	imshow(WIN_NAME, distImg);
+
+	waitKey(0);
+
+	return 0;
+}
+
+#elif(MY_TEST == 1) // vector() imwrite() addWeighted()
 
 void creatAlphaMat(Mat& mat)
 {
@@ -60,7 +94,7 @@ int main( int argc, char** argv )
 	return 0;
 }
 
-#elif(MY_TEST == 0)
+#elif(MY_TEST == 0) // test
 
 int main( int argc, char** argv )
 {

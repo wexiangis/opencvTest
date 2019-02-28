@@ -8,9 +8,9 @@
 using namespace cv;
 using namespace std;
 
-//===== 图像载入 =====
+//===== 001 图像载入 =====
 
-Mat imread(const string& filename, int flags = 1);
+// Mat imread(const string& filename, int flags = 1);
 
 //--- flag ---
 enum{
@@ -32,7 +32,7 @@ enum{
     //flags < 0 返回含Alpha通道的图像
 };
 
-//===== 图像显示 =====
+//===== 002 图像显示 =====
 
 void imshow(const string& winName, InputArray mat);
 
@@ -41,11 +41,11 @@ void imshow(const string& winName, InputArray mat);
 //不管8,16,32位还是32位浮点都要转换为8位无符[0,255]的像素再输出
 //32位浮点[0,1]将乘以255
 
-//===== 窗口命名 =====
+//===== 003 窗口命名 =====
 
 void namedWindow(const string& winName, int flags = WINDOW_AUTOSIZE);
 
-//===== 输出图像到文件 =====
+//===== 004 输出图像到文件 =====
 
 bool imwrite(const string& fileName, InputArray img, const vector<int>& param=vector<int>());
 
@@ -65,13 +65,13 @@ bool imwrite(const string& fileName, InputArray img, const vector<int>& param=ve
 //png: 0~9 默认3 CV_IMWRITE_PNG_COMPRESSION 压缩时间
 //ppm,pgm,pbm: 0/1 CV_IMWRITE_PXM_BINARY 
 
-//===== 图片叠加 =====
+//===== 005 图片叠加 =====
 
 void addWeighted(InputArray src1, double alpha, InputArray src2, double beta, double gamma, OutputArray dst, int dtype = -1);
 
 //src1, src1的透明度, src2, src2的透明度, 灰度系数(默认0), 输出至dst
 
-//===== c++中的 &(引用) 的使用 =====
+//===== 006 c++中的 &(引用) 的使用 =====
 
 void f(int& i)
 {
@@ -81,12 +81,32 @@ void f(int& i)
 //1. 意为传参i后,函数可以直接 调用 和 修改 原变量的值
 //2. 传入为结构体,访问结构体内的参数时用 i.xxx, 而不是 i->xxx
 
-//===== 滑动条 =====
+//===== 007 滑动条 =====
 
 int createTrackbar(const string& trackbarName, const string& winName, int* value, int count, TrackbarCallback onChange = 0, void* usrdata = 0);
 
 //*value 传递一个整形变量,用来设置滑块当前位置
 //count 设置滑动条最大值,最小值为0
 //onChange 滑块变动时回调 函数原型 void XXX(int, void*) 前者为滑块位置,后者为用户数据(即传入的 usrdata)
-//
+//usrdata 用户数据
 
+//===== 008 裁剪和拷贝图片 ====
+
+Mat A008(240, 320, CV_8UC3, Scalar(255, 0, 0));   //Mat(int rows, int cols, int type, Scalar(初始值));
+// 1
+Mat B008(A008, Rect(0, 0, A008.rows, A008.cols));  // Rect(x, y, width, height)
+// 2
+Mat C008 = A008(Rect(0, 0, A008.rows, A008.cols));
+// 3
+Mat D008 = A008(Range(0, A008.rows), Range(0, A008.cols));
+// 4
+Mat E008 = A008.clone();
+// 5
+
+//===== 009 convertTo =====
+
+// Mat srcImg009(240, 320, CV_32FC3, Scalar(0, 0, 0));
+// Mat srcImg009 = imread("./res/t2.jpg");
+// srcImg009.convertTo(srcImg009, CV_8UC3, 0.5, 0);
+
+//===== 010  =====
