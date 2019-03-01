@@ -222,4 +222,29 @@ void cvtColor(InputArray src, OutputArray dst, int code, int dstCn = 0);
 //填充相关 fillConvexPloy(), fillPoly()
 //随机数 RNG()
 
+GaussianBlur();//高斯模糊
+bilateralFilter();//双边过滤
+boxFilter();//箱过滤
+sqrBoxFilter();
+blur();
+filter2D();
+sepFilter2D();
+Sobel();//特征值提取
+spatialGradient();//控件梯度
+Scharr();
+Laplacian();//拉普拉斯算子
+Canny();//边沿检测
+cornerMinEigenVal();//角检测
+cornerHarris();
+cornerEigenValsAndVecs();
+preCornerDetect();
 
+erode();//腐蚀
+dilate();//膨胀
+
+warpAffine();//用矩阵处理矩阵
+warpPerspective();
+remap();
+
+Rect boundingRect();//求外接矩形
+applyColorMap();//颜色滤镜

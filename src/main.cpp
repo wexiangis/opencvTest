@@ -6,9 +6,63 @@
 using namespace cv;
 using namespace std;
 
-#define MY_TEST 4
+#define MY_TEST 5
 
-#if(MY_TEST == 4) // cvtColor()
+#if(MY_TEST == 5)
+
+int main(int argc, char **argv)
+{
+	Mat mat(500, 500, CV_8UC3, Scalar(255, 255, 255));
+	Mat dst;
+
+	ellipse(mat, 
+		Point(250, 250), //定位中心坐标
+		Size(200, 100),//宽,高范围
+		0, //旋转角度
+		0, //起始旋转角度
+		360,//结束旋转角度
+		Scalar(0, 0, 255), //颜色BGR
+		1, //线宽
+		LINE_8, //线型
+		0);//中心坐标偏移量?
+
+	circle(mat, 
+		Point(250, 250), 
+		100,//半径
+		Scalar(0, 255, 0), 
+		1,
+		LINE_8, 
+		0);
+
+	line(mat,
+		Point(100, 100),
+		Point(400, 400),
+		Scalar(0, 255, 255),
+		1,
+		LINE_8,
+		0);
+
+	arrowedLine(mat,
+		Point(100, 150),
+		Point(400, 450),
+		Scalar(255, 255, 0),
+		1,
+		LINE_8,
+		0,
+		0.5);//箭头部分线长占总长倍数 这里0.5为一半
+	
+	imshow("mat", mat);
+
+	applyColorMap(mat, dst, COLORMAP_RAINBOW);
+
+	imshow("dst", dst);
+
+	waitKey(0);
+
+	return 0;
+}
+
+#elif(MY_TEST == 4) // cvtColor()
 
 int main(int argc, char **arhv)
 {
