@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+// #include "opencv2/core/operations.hpp"//format()
 using namespace cv;
 using namespace std;
 
@@ -34,9 +35,47 @@ int main(int argc, char **argv)
 
 	int ms[3] = {3, 2, 1};
 	Mat mat(3, ms, CV_8UC1, Scalar::all(1));//长2 宽2 高1
-	// Mat mat(3, ms, CV_8UC3, Scalar(1,2,3));
 
-	// cout<<"m ="<<endl<<mat<<endl; //仅在2维时可用
+	int ms2[2] = {3, 2};
+	Mat mat2(2, ms2, CV_8UC3, Scalar(1,2,3));
+	cout<<"mat2 ="<<endl<<mat2<<endl; //仅在2维时可用
+
+	Mat mat011_7 = (Mat_<double>(3,2) << 0, 1, 2, 3, 4, 5);
+	cout<<"mat011_7 = "<<endl<<mat011_7<<endl;
+
+	Mat mat011_8 = mat011_7.row(1).clone();
+	cout<<"mat011_8 = "<<endl<<mat011_8<<endl;
+
+	Mat mat011_4 = Mat::eye(3, 3, CV_8U);//返回3rows,2cols的 单位矩阵
+	cout<<"mat011_4 = "<<endl<<mat011_4<<endl;
+
+	Mat mat011_5 = Mat::ones(3, 2, CV_8U);//返回3rows,2cols的 全是1的矩阵
+	cout<<"mat011_5 = "<<endl<<mat011_5<<endl;
+
+	Mat mat011_6 = Mat::zeros(3, 2, CV_8U);//返回3rows,2cols的 全是0的矩阵
+	cout<<"mat011_6 = "<<endl<<mat011_6<<endl;
+
+	Mat mat012_1(3, 2, CV_8UC3, Scalar(1, 2, 3));
+	cout<<"mat012_1 = "<<endl<<mat012_1<<endl;
+	cout<<"mat012_1 = "<<endl<<format(mat012_1, 3)<<endl;
+
+	Point2i mp2i(1, 2);
+	cout<<"mp2i = "<<mp2i<<endl;
+
+	Point3f mp3f(1.1, 2.2, 3.3);
+	cout<<"mp3f = "<<mp3f<<endl;
+
+	vector<int> vet013(2, 255);
+	vet013.push_back(1);
+	vet013.push_back(2);
+	vet013.push_back(3);
+	cout<<"vet013 = "<<Mat(vet013)<<endl;
+
+	vector<Point3i> vet013_2(3);
+	vet013_2[0] = Point3i(1, 2, 3);
+	vet013_2[1] = Point3i(4, 5, 6);
+	vet013_2[2] = Point3i(7, 8, 9);
+	cout<<"vet013_2 = "<<format(Mat(vet013_2), 3)<<endl;
 
 	waitKey(0);
 

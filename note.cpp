@@ -151,7 +151,7 @@ enum MouseEventFlags {
 
 //===== 011 矩阵创建 =====
 
-//-- 1 --
+//-- 1 -- 构造函数初始化
 Mat mat011(2, 2, CV_8UC3, Scalar(0, 0, 255));
 //CV_8UC3 : CV_[位数][有/无符:S/U][类型前缀]C[通道数]
 
@@ -159,6 +159,50 @@ Mat mat011(2, 2, CV_8UC3, Scalar(0, 0, 255));
 int ms011[3] = {3, 2, 1};
 Mat mat011_2(3, ms011, CV_8UC1, Scalar::all(255));//3x2x1矩阵
 
-//-- 3 --
+//-- 3 -- 构造函数 + 数组
 Mat mat011_3;
 mat011_3.create(3, 2, 1, CV_8UC(1));//3x2x1矩阵 CV_8UC(1)同CV_8UC1
+//没法设置初始值...
+
+//-- 4 -- matlab 
+Mat mat011_4 = Mat::eye(3, 2, CV_8U);//返回3rows,2cols的 单位矩阵
+Mat mat011_5 = Mat::ones(3, 2, CV_8U);//返回3rows,2cols的 全是1的矩阵
+Mat mat011_6 = Mat::zeros(3, 2, CV_8U);//返回3rows,2cols的 全是0的矩阵
+
+//-- 5 -- 
+Mat mat011_7 = (Mat_<double>(3,2) << 0, 1, 2, 3, 4, 5);//按顺序3行2列
+//[ 0, 1;
+//  2, 3;
+//  4, 5]
+
+//-- 6 --
+Mat mat011_8 = mat011_7.row(1).clone();//得到 [2, 3]
+
+//===== 012 矩阵格式化输出 =====
+
+//-- randu() 随机值填充 --
+Mat mat012_1(3, 2, CV_8UC3, Scalar(1, 2, 3));
+cout<<"mat012_1 = "<<endl<<mat012_1<<endl;
+cout<<"mat012_1 = "<<endl<<format(mat012_1, 0)<<endl;// 0/1/2/3/4/5/6...
+
+//===== 013 Point[几维][数据类型] =====
+
+Point2i mp2i013(1, 2);
+
+Point3f mp3f013(1.1, 2.2, 3.3);
+
+vector<int> vet013(2, 255);//先在前面填2个255
+vet013.push_back(1);
+vet013.push_back(2);
+vet013.push_back(3);
+cout<<"vet013 = "<<Mat(vet013)<<endl;//5x1矩阵
+
+vector<Point3i> vet013_2(3);
+vet013_2[0] = Point3i(1, 2, 3);
+vet013_2[1] = Point3i(4, 5, 6);
+vet013_2[2] = Point3i(7, 8, 9);
+cout<<"vet013_2 = "<<format(Mat(vet013_2), 3)<<endl;//3x3矩阵
+
+//===== 014 =====
+
+
