@@ -203,6 +203,23 @@ vet013_2[1] = Point3i(4, 5, 6);
 vet013_2[2] = Point3i(7, 8, 9);
 cout<<"vet013_2 = "<<format(Mat(vet013_2), 3)<<endl;//3x3矩阵
 
-//===== 014 =====
+//===== 014 cvtColor() =====
+
+void cvtColor(InputArray src, OutputArray dst, int code, int dstCn = 0);
+//code -> enum ColorConversionCodes -> CV_XXXYYY
+//dstCn 目标图像的通道数
+
+//===== 015 <math.h>常用工具 =====
+
+//防止内存溢出 alignPtr(), alignSize(), allocate(), deallocate(), fastMalloc(), fastFree();
+//计算向量角度 fastAtan2()
+//计算立方根 cubRoot()
+//向上取整数 cvCeil() 向下取整 cvFloor()
+//四舍五入 cvRound()
+//是否无穷大 cvisInf() 是否非数值 cvIsNaN()
+//文字相关 getTextSize(), cvInitFont(), putText()
+//作图相关 circle(), clipLine(), ellipse(), ellipse2Poly(), line(), rectangle(), polylines(), 类LineIterator
+//填充相关 fillConvexPloy(), fillPoly()
+//随机数 RNG()
 
 

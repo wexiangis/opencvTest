@@ -3,13 +3,29 @@
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-// #include "opencv2/core/operations.hpp"//format()
 using namespace cv;
 using namespace std;
 
-#define MY_TEST 3
+#define MY_TEST 4
 
-#if(MY_TEST == 3) // setMouseCallback() MouseCallback()
+#if(MY_TEST == 4) // cvtColor()
+
+int main(int argc, char **arhv)
+{
+	Mat srcImg, dstImg;
+
+	srcImg = imread("./res/t2.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	imshow("srcImg", srcImg);
+
+	cvtColor(srcImg, dstImg, CV_RGB2BGR);
+	imshow("dstImg", dstImg);
+
+	waitKey(0);
+
+	return 0;
+}
+
+#elif(MY_TEST == 3) // setMouseCallback() MouseCallback() format() PointNX
 
 void my_mouseCallback(int event, int x, int y, int flags, Mat* srcImg)
 {
