@@ -8,12 +8,11 @@ using namespace std;
 
 #define MY_TEST 5
 
-#if(MY_TEST == 5)
+#if(MY_TEST == 5) // shape: ellipse, circle, line, rect, ploygon
 
 int main(int argc, char **argv)
 {
 	Mat mat(500, 500, CV_8UC3, Scalar(255, 255, 255));
-	Mat dst;
 
 	ellipse(mat, 
 		Point(250, 250), //定位中心坐标
@@ -51,10 +50,64 @@ int main(int argc, char **argv)
 		0,
 		0.5);//箭头部分线长占总长倍数 这里0.5为一半
 	
+	rectangle(mat, 
+		Point(300, 10), 
+		Point(450, 110),
+		Scalar(0, 128, 255), 
+		1,
+		LINE_8, 
+		0);
+
+	drawMarker(mat, 
+		Point(80, 80), 
+		Scalar(128, 255, 0),
+		MARKER_TRIANGLE_UP, 
+		//markerType:
+		//MARKER_CROSS,MARKER_TILTED_CROSS,
+		//MARKER_STAR,
+		//MARKER_DIAMOND,MARKER_SQUARE,
+		//MARKER_TRIANGLE_UP,MARKER_TRIANGLE_DOWN
+		20, //markerSize
+		1,//thickness
+		8);//line_type
+
+	Point ploygon1[] = {
+		Point(0, 10),
+		Point(10, 0),
+		Point(20, 10),
+		Point(30, 0),
+		Point(40, 10),
+		Point(30, 20),
+		Point(40, 30),
+		Point(30, 40),
+		Point(20, 30),
+		Point(10, 40),
+		Point(0, 30),
+		// Point(10, 20),
+		Point(9, 21),
+		Point(9, 21+5),
+		Point(9+10, 21+5),
+		Point(9+10, 19-5),
+		Point(9, 19-5),
+		Point(9, 19),
+	};
+
+	const Point* ploygonArray[] = {ploygon1};
+
+	int ploygonArrayCount[] = { sizeof(ploygon1)/sizeof(Point) };
+
+	fillPoly(mat, 
+		ploygonArray, 
+		ploygonArrayCount,
+		sizeof(ploygonArrayCount)/sizeof(int),
+		Scalar(0, 0, 255), 
+		LINE_8,
+		0);
+
 	imshow("mat", mat);
 
+	Mat dst;
 	applyColorMap(mat, dst, COLORMAP_RAINBOW);
-
 	imshow("dst", dst);
 
 	waitKey(0);
