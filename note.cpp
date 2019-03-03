@@ -248,3 +248,7 @@ remap();
 
 Rect boundingRect();//求外接矩形
 applyColorMap();//颜色滤镜
+
+//===== 016 getTickCount()*1000/getTickFrequency() ms =====
+
+//===== 017

@@ -6,9 +6,74 @@
 using namespace cv;
 using namespace std;
 
-#define MY_TEST 5
+#define MY_TEST 6
 
-#if(MY_TEST == 5) // shape: ellipse, circle, line, rect, ploygon
+#if(MY_TEST == 6)
+
+Mat colorReduce(Mat& input, vector<uchar> &wideOfBit) //wideOfBit[3] RGB 三色分别使用几位色? 默认 color&oxFF
+{
+	Mat output = input.clone();
+	int rowSize = output.rows;
+	int colSize = output.cols*output.channels();
+	vector<uchar> wide;
+	if(wideOfBit.size() < 3)
+	{
+		int i = 0;
+		for(; i < wideOfBit.size(); i++)
+			wide.push_back(wideOfBit[i]);
+		for(; i < 3; i++)
+			wide.push_back(0xFF);
+	}
+	else
+		wide = wideOfBit;
+
+	cout<<"row/"<<output.rows<<" col/"<<output.cols<<" chn/"<<output.channels()<<endl;
+
+	for(int rowC = 0; rowC < rowSize; rowC++)
+	{
+		uchar *data = output.ptr<uchar>(rowC);
+		for(int colC = 0; colC < colSize;)
+		{
+			data[colC++] = data[colC]&wide.at(2);
+			if(colC < colSize) data[colC++] = data[colC]&wide.at(1);
+			if(colC < colSize) data[colC++] = data[colC]&wide.at(0);
+		}
+	}
+
+	return output;
+}
+
+int main(int argc, char **argv)
+{
+	long long tic = getTickCount();
+
+	//----------------------
+
+	Mat img = imread("./res/t1.jpg");
+	imshow("img", img);
+
+	vector<uchar> vt;
+	vt.push_back(0x0F);
+	vt.push_back(0xFF);
+	vt.push_back(0xFF);
+
+	Mat img2 = colorReduce(img, vt);
+	imshow("img-copy", img2);
+	//----------------------
+
+	long long tic2 = getTickCount();
+	double fq = getTickFrequency();
+	tic = tic*1000/fq;
+	tic2 = tic2*1000/fq; //ms
+
+	cout<<"timeout : "<<tic<<" -> "<<tic2<<" d/"<<tic2 - tic<<endl;
+
+	waitKey(0);
+
+	return 0;	
+}
+
+#elif(MY_TEST == 5) // shape: ellipse, circle, line, rect, ploygon
 
 int main(int argc, char **argv)
 {
