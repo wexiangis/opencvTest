@@ -251,4 +251,26 @@ applyColorMap();//颜色滤镜
 
 //===== 016 getTickCount()*1000/getTickFrequency() ms =====
 
-//===== 017
+//===== 017 auto =====
+
+//c++11
+auto i = 0.12; //double
+auto i = 3; //int
+
+//c++11
+int v[] = {1, 3, 5, 7};
+for(auto i : v)
+    cout<<i<<endl;
+for(auto i : {1, 3, 5, 7})
+    cout<<i<<endl;
+for(auto& i : v)
+    ++i;
+
+const //承诺不会改变该变量的值
+constexpr //编译时求值 //后接常量表达式 即函数的传参必须是固定值
+
+//===== 018 resize() =====
+
+cv::resize( InputArray src, OutputArray dst,
+            Size dsize, double fx = 0, double fy = 0,
+            int interpolation = INTER_LINEAR );

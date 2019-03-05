@@ -1,47 +1,51 @@
 
+#include "src.hpp"
 
-#include <opencv2/opencv.hpp>
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-using namespace cv;
-using namespace std;
+#define MY_TEST 7
 
-#define MY_TEST 6
+#if(MY_TEST == 7) // resize() split() merge()
 
-#if(MY_TEST == 6)
 
-Mat colorReduce(Mat& input, vector<uchar> &wideOfBit) //wideOfBit[3] RGB 三色分别使用几位色? 默认 color&oxFF
+int main(int argc, char **argv)
 {
-	Mat output = input.clone();
-	int rowSize = output.rows;
-	int colSize = output.cols*output.channels();
-	vector<uchar> wide;
-	if(wideOfBit.size() < 3)
-	{
-		int i = 0;
-		for(; i < wideOfBit.size(); i++)
-			wide.push_back(wideOfBit[i]);
-		for(; i < 3; i++)
-			wide.push_back(0xFF);
-	}
-	else
-		wide = wideOfBit;
+	Mat ipt = imread("./res/t3.jpg");
+	imshow("ipt", ipt);
 
-	cout<<"row/"<<output.rows<<" col/"<<output.cols<<" chn/"<<output.channels()<<endl;
+	// Mat out;
+	// resize(ipt, out, Size(500, 800), INTER_LINEAR);
+	// resize(ipt, out, Size(), 1, 0.5, INTER_LINEAR);
+	// imshow("out", out);
 
-	for(int rowC = 0; rowC < rowSize; rowC++)
-	{
-		uchar *data = output.ptr<uchar>(rowC);
-		for(int colC = 0; colC < colSize;)
-		{
-			data[colC++] = data[colC]&wide.at(2);
-			if(colC < colSize) data[colC++] = data[colC]&wide.at(1);
-			if(colC < colSize) data[colC++] = data[colC]&wide.at(0);
-		}
-	}
+	// Mat pup, pdw;
+	// pyrUp(ipt, pup, Size(ipt.cols*2, ipt.rows*2));//必须成倍增长
+	// imshow("pup", pup);
+	// pyrDown(ipt, pdw, Size(ipt.cols/2, ipt.rows/2));//必须成倍减少
+	// imshow("pdw", pdw);
 
-	return output;
+	vector<uchar> vt;
+	vt.push_back(0x1F);
+	vt.push_back(0x8F);
+	vt.push_back(0xFF);
+	Mat ipt2 = colorReduce(ipt, vt);//先对原图进行RGB权重分级 这样split()出来的3张图会有灰度梯度
+	imshow("ipt2", ipt2);
+
+	vector<Mat> dChn;
+	split(ipt2, dChn);
+	// imshow("chn0", dChn.at(0));
+	// imshow("chn1", dChn.at(1));
+	// imshow("chn2", dChn.at(2));
+
+	Mat ipt3;
+	swap(dChn.at(0), dChn.at(2));//反序
+	merge(dChn, ipt3);//重组
+	imshow("ipt3", ipt3);
+
+	waitKey(0);
+
+	return 0;
 }
+
+#elif(MY_TEST == 6) // getTickCount()/getTickFrequency() mt.ptr<uchar>(rowC) mt.at<Vec3b>(rowC, colC)[0]
 
 int main(int argc, char **argv)
 {
@@ -66,7 +70,7 @@ int main(int argc, char **argv)
 	tic = tic*1000/fq;
 	tic2 = tic2*1000/fq; //ms
 
-	cout<<"timeout : "<<tic<<" -> "<<tic2<<" d/"<<tic2 - tic<<endl;
+	cout<<"timeout : "<<tic<<" -> "<<tic2<<" d/"<<tic2 - tic<<"ms"<<endl;
 
 	waitKey(0);
 
